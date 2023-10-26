@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="./node_modules/bootstrap/dist/css/bootstrap.css"
+      rel="stylesheet"
+    />
+    <style type="text/css">
+      #mynetwork {
+        height: 400px;
+        border: 1px solid lightgray;
+      }
+      #tabTransiciones {
+        height: 400px;
+        border: 1px solid lightgray;
+      }
+    </style>
+    <title>Automatas</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <h5 class="text-center mt-4 mb-4">AUTOMATAS FINITOS DETERMINISTAS</h5>
+      </div>
+      <div class="row mb-2 text-center">
+        <input type="file" id="csvFile" accept=".csv" />
+      </div>
+      <div class="row">
+        <div class="col-6" id="tabTransiciones">
+          <div class="row text-center">
+            <h5>Tabla de transiciones</h5>
+            <table class="table text-center" id="csvData"></table>
+          </div>
+          <div class="row">
+            <h5>Simbologia:</h5>
+            <div>
+              <table>
+                <tr>
+                  <td>Estado inicial: </td>
+                  <td style="background-color: green; width: 20px;"></td>
+                </tr>
+                <tr>
+                  <td>Estado final: </td>
+                  <td style="background-color: red;"></td>
+                  
+                </tr>
+                <tr>
+                  <td>Estado inicial-final: </td>
+                  <td style="background-color: yellow;"></td>
+                  
+                </tr>
+                <!-- Puedes agregar más filas para otros colores y símbolos -->
+              </table>
+            </div>
+              
+          </div>
+        </div>
+        <div class="col-6" id="mynetwork"></div>
+      </div>
+      <div class="row justify-content-center mt-4">
+        <label class="col-4 text-end" for="inputValidarCadena"
+          >Ingrese una cadena:</label
+        >
+        <input
+          class="col-4"
+          placeholder="ej: 1100011001"
+          type="text"
+          name="Cadena"
+          id="inputValidarCadena"
+          disabled
+        />
+      </div>
+      <div class="row justify-content-center mt-2">
+        <button
+          class="btn btn-primary col-4"
+          id="btnValidarCadena"
+          type="button"
+          onclick="validarCadena()"
+          disabled
+        >
+          Validar cadena
+        </button>
+      </div>
+    </div>
+  </body>
+
+  <script
+    type="text/javascript"
+    src="./node_modules/vis-network/standalone/umd/vis-network.min.js"
+  ></script>
+  <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./index.js"></script>
+</html>
