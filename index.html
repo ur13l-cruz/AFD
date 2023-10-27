@@ -9,27 +9,109 @@
     />
     <style type="text/css">
       #mynetwork {
-        height: 400px;
-        border: 1px solid lightgray;
+        height: 500px;
+        /*border: 1px solid lightgray;*/
       }
       #tabTransiciones {
-        height: 400px;
-        border: 1px solid lightgray;
+        height: 500px;
+        /*border: 1px solid lightgray;*/
       }
     </style>
-    <title>Automatas</title>
+    <title>Programa 4</title>
   </head>
   <body>
     <div class="container">
       <div class="row">
-        <h5 class="text-center mt-4 mb-4">AUTOMATAS FINITOS DETERMINISTAS</h5>
+        <h5 class="text-center mt-4 mb-4">AUTÓMATAS FINITOS DETERMINISTAS</h5>
       </div>
-      <div class="row mb-2 text-center">
-        <input type="file" id="csvFile" accept=".csv" />
+      <div class="row mb-4">
+        <div class="row mb-3">
+          <div class="col-6">
+            <div class="row">
+              <label class="col-6 col-form-label" for="inputQ"
+                >Ingrese Q:</label
+              >
+              <div class="col-6">
+                <input
+                  class="form-control"
+                  placeholder="ej: q0,q1,q2..."
+                  type="text"
+                  name="Q"
+                  id="inputQ"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="row">
+              <label class="col-6 col-form-label" for="inputΣ"
+                >Ingrese Σ:</label
+              >
+              <div class="col-6">
+                <input
+                  class="form-control"
+                  placeholder="ej: 0,1"
+                  type="text"
+                  name="inputΣ"
+                  id="inputΣ"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-6">
+            <div class="row">
+              <label class="col-6 col-form-label" for="inputNodoInicial"
+                >Ingrese el nodo inicial:</label
+              >
+              <div class="col-6">
+                <input
+                  class="form-control"
+                  placeholder="ej: q0"
+                  type="text"
+                  name="Nodo inicial"
+                  id="inputNodoInicial"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="row">
+              <label class="col-6 col-form-label" for="inputF"
+                >Ingrese F:</label
+              >
+              <div class="col-6">
+                <input
+                  class="form-control"
+                  placeholder="ej: q0"
+                  type="text"
+                  name="F"
+                  id="inputF"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-4 justify-content-center">
+          <button type="button" class="btn btn-primary col-3" onclick="generarTransiciones()">Agregar transiciones</button>
+        </div>
+        <div class="row mb-4" id="tabT">
+
+        </div>
+        <div class="row mb-4 justify-content-center">
+          <button class="btn btn-primary col-7" id="btnGenerarTablaT" onclick="generarTabla()" disabled>
+            Generar tabla de transiciones
+          </button>
+        </div>
+      </div>
+      <div class="row mb-5 text-center">
+        <input class="col-6" type="file" id="csvFile" accept=".csv" />
+        <!-- <input class="col-6" type="file" id="txtFile" accept=".txt" /> -->
       </div>
       <div class="row">
         <div class="col-6" id="tabTransiciones">
-          <div class="row text-center">
+          <div class="row mb-4 text-center justify-content-center">
             <h5>Tabla de transiciones</h5>
             <table class="table text-center" id="csvData"></table>
           </div>
@@ -38,23 +120,20 @@
             <div>
               <table>
                 <tr>
-                  <td>Estado inicial: </td>
-                  <td style="background-color: green; width: 20px;"></td>
+                  <td>Estado inicial:</td>
+                  <td style="background-color: green; width: 20px"></td>
                 </tr>
                 <tr>
-                  <td>Estado final: </td>
-                  <td style="background-color: red;"></td>
-                  
+                  <td>Estado final:</td>
+                  <td style="background-color: red"></td>
                 </tr>
                 <tr>
-                  <td>Estado inicial-final: </td>
-                  <td style="background-color: yellow;"></td>
-                  
+                  <td>Estado inicial-final:</td>
+                  <td style="background-color: yellow"></td>
                 </tr>
                 <!-- Puedes agregar más filas para otros colores y símbolos -->
               </table>
             </div>
-              
           </div>
         </div>
         <div class="col-6" id="mynetwork"></div>
