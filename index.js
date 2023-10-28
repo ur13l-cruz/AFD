@@ -233,54 +233,59 @@ function generarTransiciones() {
 
 function validarCadena() {
   valueInputValidarCadena = document.getElementById("inputValidarCadena").value;
-  t1 = [...t1];
-  let a = new Set();
-  let c = new Array();
-  let d = [];
-  for (let nodo of data.edges) {
-    a.add(nodo.from)
-}
+  if (valueInputValidarCadena != "") {
+    t1 = [...t1];
+    let a = new Set();
+    let c = new Array();
+    let d = [];
+    for (let nodo of data.edges) {
+      a.add(nodo.from);
+    }
 
-  for (let nodo of data.edges) {
-    c.push({
-        [nodo.label]: nodo.to
-    });
-} 
-a = [...a];
+    for (let nodo of data.edges) {
+      c.push({
+        [nodo.label]: nodo.to,
+      });
+    }
+    a = [...a];
 
-let result = new Array();
-let groupedArray = [];
-for (let i = 0; i < c.length; i += 2) {
-  groupedArray.push([c[i], c[i + 1]]);
-}
-for (let i = 0; i < a.length; i++) {
-  const j = i % groupedArray.length;
-  result[a[i]] = groupedArray[j];
-}
+    let result = new Array();
+    let groupedArray = [];
+    for (let i = 0; i < c.length; i += 2) {
+      groupedArray.push([c[i], c[i + 1]]);
+    }
+    for (let i = 0; i < a.length; i++) {
+      const j = i % groupedArray.length;
+      result[a[i]] = groupedArray[j];
+    }
 
-let currentState = inputNodoInicial;
-for (const symbol of valueInputValidarCadena) {
-  if (!Σ.includes(symbol)) {
-    alert("cadena invalida");
+    let currentState = inputNodoInicial;
+    for (const symbol of valueInputValidarCadena) {
+      if (!Σ.includes(symbol)) {
+        Swal.fire("Cadena invalida", "", "error");
+      }
+      console.log("symbol", symbol);
+      let symbolTemp;
+      for (let i = 0; i < result[currentState].length; i++) {
+        if (result[currentState][i][symbol] != undefined) {
+          symbolTemp = result[currentState][i][symbol];
+        }
+      }
+      console.log("nodo", symbolTemp);
+      if (symbolTemp === undefined) {
+        Swal.fire("Cadena invalida", "", "error");
+      }
+
+      currentState = symbolTemp;
+    }
+
+    if (currentState == inputF) {
+      Swal.fire("Cadena valida", "", "success");
+    } else {
+      Swal.fire("Cadena invalida", "", "error");
+    }
+  } else {
+    Swal.fire("Ingrese una cadena para validar", "", "warning");
   }
-  console.log("symbol", symbol)
-  let symbolTemp;
-  for(let i=0;i < result[currentState].length;i++) {
-    if (result[currentState][i][symbol] != undefined) {
-      symbolTemp = result[currentState][i][symbol];
-    } 
-  }
-  console.log("nodo", symbolTemp);
-  if (symbolTemp === undefined) {
-    alert("Cadena invalida");
-  }
-
-  currentState = symbolTemp;
-}
-
-if (currentState == inputF) {
-  alert("Cadena valida");
-} else {
-  alert("Cadena invalida");
-}
+  document.getElementById("inputValidarCadena").value = "";
 }
