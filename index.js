@@ -2,19 +2,8 @@ let cadena = "";
 let nodoInit = "";
 let nodoFinal = "";
 let data;
-/*
-let Q;
-let Σ;
-let q0;
-let F;*//*
-let AFD = {
-  estados,
-  alfabeto,
-  transiciones,
-  estadosinicial,
-  estadofinal
-}*/
-let t1 = new Array();
+let afdTransiciones = new Array();
+let t1 = new Set();
 let t2 = new Array();
 let Q;
 let Σ;
@@ -182,7 +171,12 @@ function generarTabla() {
           cell.textContent = document.getElementById(`inputTransicion${k}`).value;
           row.appendChild(cell);
           cadena += `${tempInit}->${document.getElementById(`inputTransicion${k}`).value}[label="${Σ[j-1]}"];`;
-          
+          t1.add(
+            tempInit
+          )
+          let obj = {}
+          obj[Σ[j-1]] = document.getElementById(`inputTransicion${k}`).value;
+          t2.push(obj)
           k++;
         }
       }
@@ -202,30 +196,6 @@ function generarTabla() {
   }
 }
 
-/*function generarDiagrama() {
-  var table = document.getElementById("csvData");
-
-  // Array para almacenar los valores
-  var allValues = [];
-
-  // Recorre las filas de la tabla
-  for (var i = 1; i < table.rows.length; i++) {
-    var row = table.rows[i];
-    var rowValues = [];
-    for (var j = 0; j < row.cells.length; j++) {
-      var cell = row.cells[j];
-      var input = cell.querySelector('input[type="text"]');
-      if (input) {
-        var inputValue = input.value;
-        rowValues.push(inputValue);
-      } else {
-        var cellValue = cell.textContent;
-        rowValues.push(cellValue);
-      }
-    }
-    allValues.push(rowValues);
-  }
-}*/
 
 
 function generarTransiciones() {
@@ -262,15 +232,55 @@ function generarTransiciones() {
 }
 
 function validarCadena() {
-  //ver data de la libreria, para poder sacar las transiciones
   valueInputValidarCadena = document.getElementById("inputValidarCadena").value;
-  let setAlfa = new Set(Σ);
-  let setEstados = new Set(Q);
-  console.log(setEstados);
-  //podria quedar en 2 for para buscar
-  for (let letra of valueInputValidarCadena) {
-    if (!setAlfa.has(letra)) {
-      alert("Simbolo no valido");
-    }
+  t1 = [...t1];
+  let a = new Set();
+  let c = new Array();
+  let d = [];
+  for (let nodo of data.edges) {
+    a.add(nodo.from)
+}
+
+  for (let nodo of data.edges) {
+    c.push({
+        [nodo.label]: nodo.to
+    });
+} 
+a = [...a];
+
+let result = new Array();
+let groupedArray = [];
+for (let i = 0; i < c.length; i += 2) {
+  groupedArray.push([c[i], c[i + 1]]);
+}
+for (let i = 0; i < a.length; i++) {
+  const j = i % groupedArray.length;
+  result[a[i]] = groupedArray[j];
+}
+
+let currentState = inputNodoInicial;
+for (const symbol of valueInputValidarCadena) {
+  if (!Σ.includes(symbol)) {
+    alert("cadena invalida");
   }
+  console.log("symbol", symbol)
+  let symbolTemp;
+  for(let i=0;i < result[currentState].length;i++) {
+    if (result[currentState][i][symbol] != undefined) {
+      symbolTemp = result[currentState][i][symbol];
+    } 
+  }
+  console.log("nodo", symbolTemp);
+  if (symbolTemp === undefined) {
+    alert("Cadena invalida");
+  }
+
+  currentState = symbolTemp;
+}
+
+if (currentState == inputF) {
+  alert("Cadena valida");
+} else {
+  alert("Cadena invalida");
+}
 }
