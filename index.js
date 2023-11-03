@@ -6,16 +6,16 @@ let afdTransiciones = new Array();
 let t1 = new Set();
 let t2 = new Array();
 let Q;
-let Σ;
+let Σ = new Array();
 let inputNodoInicial;
 let inputF;
 
 document.getElementById("csvFile").addEventListener("change", handleFileSelect);
 
 function handleFileSelect(event) {
-  const file = event.target.files[0];
+  const archivo = event.target.files[0];
 
-  if (!file) {
+  if (!archivo) {
     return;
   }
 
@@ -39,11 +39,15 @@ function handleFileSelect(event) {
       if (headers[i] != "" && headers[i] != "\r") {
         const th = document.createElement("th");
         th.scope = "col";
+        if (headers[i].includes("\r")) {
+          headers[i] = headers[i].split("\r")[0];
+        }
+        
         th.textContent = headers[i];
+        Σ.push(headers[i]);
         tr.appendChild(th);
       }
     }
-
     thead.appendChild(tr);
     table.appendChild(thead);
 
@@ -54,8 +58,10 @@ function handleFileSelect(event) {
         if (cells[0].includes("->")) {
           if (cells[0].includes("*")) {
             nodoInit = cells[0].split("*")[1];
+            //inputNodoInicial = cells[0].split("*")[1];
           } else {
             nodoInit = cells[0].split("->")[1];
+            //inputNodoInicial = cells[0].split("->")[1];
           }
         }
         if (cells[0].includes("*")) {
@@ -100,6 +106,8 @@ function handleFileSelect(event) {
       }
       table.appendChild(row);
     }
+    inputNodoInicial = nodoInit;
+    inputF = nodoFinal;
     if (nodoInit == nodoFinal) {
       cadena += `${nodoInit}[color=yellow]`;
     } else {
@@ -109,7 +117,7 @@ function handleFileSelect(event) {
     hacerDiagrama(cadena);
   };
 
-  reader.readAsText(file);
+  reader.readAsText(archivo);
   document.getElementById("btnValidarCadena").disabled = false;
   document.getElementById("inputValidarCadena").disabled = false;
 }
@@ -163,12 +171,24 @@ function generarTabla() {
       for (let j = 0; j < Σ.length + 1; j++) {
         if (j < 1) {
           const cell = document.createElement("td");
-          cell.textContent = Q[i];
+          if (Q[i] == inputNodoInicial && Q[i] == inputF) {
+            cell.textContent = "->*" + Q[i];
+          } else if (Q[i] == inputNodoInicial) {
+            cell.textContent = "->" + Q[i];
+          } else if (Q[i] == inputF) {
+            cell.textContent = "*" + Q[i];
+          } else {
+            cell.textContent = Q[i];
+          }
           tempInit = Q[i];
           row.appendChild(cell);
         } else {
           const cell = document.createElement("td");
-          cell.textContent = document.getElementById(`inputTransicion${k}`).value;
+          if (document.getElementById(`inputTransicion${k}`).value == inputF) {
+            cell.textContent = "*" + document.getElementById(`inputTransicion${k}`).value;
+          } else {
+            cell.textContent = document.getElementById(`inputTransicion${k}`).value;
+          }
           row.appendChild(cell);
           cadena += `${tempInit}->${document.getElementById(`inputTransicion${k}`).value}[label="${Σ[j-1]}"];`;
           t1.add(
@@ -190,7 +210,7 @@ function generarTabla() {
 
     hacerDiagrama(cadena);
     document.getElementById("btnValidarCadena").disabled = false;
-  document.getElementById("inputValidarCadena").disabled = false;
+    document.getElementById("inputValidarCadena").disabled = false;
   } else {
     alert("ingrese todos los valores requeridos");
   }
@@ -241,45 +261,45 @@ function validarCadena() {
     for (let nodo of data.edges) {
       a.add(nodo.from);
     }
-
     for (let nodo of data.edges) {
+      //console.log(nodo.label);
       c.push({
         [nodo.label]: nodo.to,
       });
     }
     a = [...a];
 
-    let result = new Array();
-    let groupedArray = [];
+    let resultado = new Array();
+    let grupoArray = [];
     for (let i = 0; i < c.length; i += 2) {
-      groupedArray.push([c[i], c[i + 1]]);
+      grupoArray.push([c[i],c[i + 1]]);
     }
     for (let i = 0; i < a.length; i++) {
-      const j = i % groupedArray.length;
-      result[a[i]] = groupedArray[j];
+      const j = i % grupoArray.length;
+      resultado[a[i]] = grupoArray[j];
     }
 
-    let currentState = inputNodoInicial;
+    let estadoActual = inputNodoInicial;
     for (const symbol of valueInputValidarCadena) {
       if (!Σ.includes(symbol)) {
         Swal.fire("Cadena invalida", "", "error");
       }
-      console.log("symbol", symbol);
       let symbolTemp;
-      for (let i = 0; i < result[currentState].length; i++) {
-        if (result[currentState][i][symbol] != undefined) {
-          symbolTemp = result[currentState][i][symbol];
+      for (let i = 0; i < resultado[estadoActual].length; i++) {
+        if (resultado[estadoActual][i][symbol] != undefined) {
+          symbolTemp = resultado[estadoActual][i][symbol];
         }
       }
-      console.log("nodo", symbolTemp);
       if (symbolTemp === undefined) {
         Swal.fire("Cadena invalida", "", "error");
       }
 
-      currentState = symbolTemp;
+      estadoActual = symbolTemp;
     }
-
-    if (currentState == inputF) {
+    //hacer animacion haciendo funcion que vuelva a pintar el diagrama
+    dibujarTransiciones();
+    //________________________________________________________________
+    if (estadoActual == inputF) {
       Swal.fire("Cadena valida", "", "success");
     } else {
       Swal.fire("Cadena invalida", "", "error");
@@ -289,3 +309,29 @@ function validarCadena() {
   }
   document.getElementById("inputValidarCadena").value = "";
 }
+
+function dibujarTransiciones () {
+  //console.log(cadena);
+}
+
+document.getElementById('exportCSV').addEventListener('click', function() {
+  let tabla = document.getElementById('csvData');
+  
+  let csv = [];
+  
+  for (let i = 0; i < tabla.rows.length; i++) {
+    let row = [];
+    for (let j = 0; j < tabla.rows[i].cells.length; j++) {
+      row.push(tabla.rows[i].cells[j].textContent);
+    }
+    csv.push(row.join(','));
+  }
+  let csvData = csv.join('\n');
+  let blob = new Blob([csvData], { type: 'text/csv' });
+  let csvURL = window.URL.createObjectURL(blob);
+  let a = document.createElement('a');
+  a.href = csvURL;
+  a.download = 'tabla.csv';
+  a.click();
+  window.URL.revokeObjectURL(csvURL);
+});

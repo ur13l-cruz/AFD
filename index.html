@@ -107,8 +107,12 @@
         </div>
       </div>
       <div class="row mb-5 text-center">
-        <input class="col-6" type="file" id="csvFile" accept=".csv" />
+        
         <!-- <input class="col-6" type="file" id="txtFile" accept=".txt" /> -->
+      </div>
+      <div class="row mb-5 d-flex justify-content-evenly">
+        <input class="col-6" type="file" id="csvFile" accept=".csv" />
+        <button class="btn btn-primary col-2" id="exportCSV">Exportar a CSV</button>
       </div>
       <div class="row">
         <div class="col-6" id="tabTransiciones">
@@ -152,7 +156,7 @@
           disabled
         />
       </div>
-      <div class="row justify-content-center mt-2">
+      <div class="row justify-content-center mt-2 mb-5">
         <button
           class="btn btn-primary col-4"
           id="btnValidarCadena"
