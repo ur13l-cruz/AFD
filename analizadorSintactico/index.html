@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analizador sintáctico</title>
+    <link
+      href="../node_modules/bootstrap/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center mt-5">
+          <h4>ANALIZADOR GRAMATICAL</h4>
+          <h5>Estructura "While"</h5>
+        </div>
+      </div>
+      <div
+        style="
+          width: 800px;
+          height: 400px;
+          margin: 0 auto;
+          border: 10px double black;
+        "
+        id="contPrincipal"
+        class="mt-5 d-flex justify-content-center align-items-center p-2"
+      >
+        <div class="" id="contInicio">
+          <div class="">
+            <pre><code style="font-size: 30px;">while (i < 5) { i++ }</code></pre>
+          </div>
+          <div class="text-center">
+            <button
+              id="btnIniciar"
+              type="button"
+              class="btn btn-primary"
+              onclick="iniciarAnalisis()"
+            >
+              Iniciar
+            </button>
+          </div>
+        </div>
+        <div class="d-none" id="contAnalisis">
+          <div class="d-flex justify-content-end mt-1">
+            <div class="me-2">
+              <button
+                type="button"
+                class="btn btn-primary"
+                style="width: 150px"
+                onclick="cargarGramatica()"
+              >
+                Cargar gramatica
+              </button>
+            </div>
+            <div class="me-2">
+              <button
+                id="btnCargarEjemplo"
+                type="button"
+                class="btn btn-primary"
+                style="width: 150px"
+                disabled
+                onclick="cargarEjemplo()"
+              >
+                Cargar ejemplo
+              </button>
+            </div>
+            <div class="">
+              <button
+                type="button"
+                class="btn btn-primary"
+                style="width: 150px"
+                onclick="resetAnalizador()"
+              >
+                Salir
+              </button>
+            </div>
+          </div>
+          <div id="gramatica"></div>
+        </div>
+      </div>
+    </div>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./index.js"></script>
+  </body>
+</html>
